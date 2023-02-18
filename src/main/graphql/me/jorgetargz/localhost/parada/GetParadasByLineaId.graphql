@@ -1,15 +1,12 @@
-query GetAllLineas {
-    allLineas {
-        id,
-        numero,
-        tipo,
+query GetParadasByLineaId($id: Int!) {
+    linea(id: $id) {
         paradas {
-            id,
-            direccion,
-            nombre,
+            id
+            nombre
+            direccion
             encargado {
-                id,
-                nombre,
+                id
+                nombre
                 dni
             }
             linea {

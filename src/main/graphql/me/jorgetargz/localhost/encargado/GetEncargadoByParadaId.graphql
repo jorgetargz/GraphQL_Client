@@ -1,0 +1,9 @@
+query GetEncargadoByParadaId($id: Int!) {
+    parada(id: $id) {
+        encargado {
+            id
+            nombre
+            dni
+        }
+    }
+}

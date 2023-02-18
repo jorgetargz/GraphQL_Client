@@ -73,7 +73,7 @@ class MainController() {
             primaryStage!!.y = event.screenY + yOffset
         }
         menuPrincipal.isVisible = true
-        cargarPantalla(Screens.PRINCIPAL)
+        cargarPantalla(Screens.PANEL)
     }
 
     val width: Double
@@ -142,20 +142,8 @@ class MainController() {
     }
 
     @FXML
-    private fun logout() {
-        menuPrincipal.isVisible = false
-        cargarPantalla(Screens.LOGIN)
-    }
-
-    @FXML
     private fun exit() {
         Platform.exit()
         exitProcess(0)
-    }
-
-    //events launched on other screens
-    fun onLoginHecho() {
-        menuPrincipal.isVisible = true
-        cargarPantalla(Screens.WELCOME)
     }
 }

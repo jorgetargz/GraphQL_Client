@@ -1,4 +1,4 @@
-package me.jorgetargz.ui.lineas
+package me.jorgetargz.ui.panel
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -7,23 +7,83 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.jorgetargz.domain.modelo.Linea
+import me.jorgetargz.domain.modelo.Parada
+import me.jorgetargz.domain.services.EncargadosService
 import me.jorgetargz.domain.services.LineaService
+import me.jorgetargz.domain.services.ParadasService
 import me.jorgetargz.utils.NetworkResult
 
-class LineasViewModel {
-
-    private val lineaService = LineaService()
-
-    private val _uiState = MutableStateFlow(LineasState())
-    val uiState: StateFlow<LineasState> get() = _uiState
+class PanelViewModel(
+    private val lineaService: LineaService = LineaService(),
+    private val paradaService: ParadasService = ParadasService(),
+    private val encargadoService: EncargadosService = EncargadosService(),
+) {
+    private val _uiState = MutableStateFlow(PanelState())
+    val uiState: StateFlow<PanelState> get() = _uiState
 
     private fun getAllLineas() {
         CoroutineScope(Dispatchers.IO).launch {
             lineaService.getAllLineas().collect() { result ->
                 when (result) {
                     is NetworkResult.Success -> {
+                        val lineas = result.data!!
+                        val paradas = lineas.flatMap { it.paradas }
+                        val encargados = paradas.map { it.encargado }
                         _uiState.update { it.copy(
-                            lineas = result.data!!,
+                            lineas = lineas,
+                            paradas = paradas,
+                            encargados = encargados,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Error -> {
+                        _uiState.update { it.copy(
+                            error = result.message,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _uiState.update { it.copy(
+                            loading = true) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadParadasByLinea(linea: Linea) {
+        CoroutineScope(Dispatchers.IO).launch {
+            paradaService.getParadasByLineaId(linea.id).collect() { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _uiState.update { it.copy(
+                            paradas = result.data!!,
+                            encargados = result.data!!.map { it.encargado },
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Error -> {
+                        _uiState.update { it.copy(
+                            error = result.message,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _uiState.update { it.copy(
+                            loading = true) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadEncargadoByParada(parada: Parada) {
+        CoroutineScope(Dispatchers.IO).launch {
+            encargadoService.getEncargadoByParadaId(parada.id).collect() { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _uiState.update { it.copy(
+                            encargados = listOf(result.data!!),
                             loading = false) }
                     }
 
@@ -44,7 +104,7 @@ class LineasViewModel {
 
     private fun createLinea(linea: Linea) {
         CoroutineScope(Dispatchers.IO).launch {
-            lineaService.createLinea(linea.tipo, linea.numero).collect() { result ->
+            lineaService.createLinea(linea).collect() { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _uiState.update { it.copy(
@@ -69,7 +129,7 @@ class LineasViewModel {
 
     private fun updateLinea(linea: Linea) {
         CoroutineScope(Dispatchers.IO).launch {
-            lineaService.updateLinea(linea.id, linea.tipo, linea.numero).collect() { result ->
+            lineaService.updateLinea(linea).collect() { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _uiState.update {
@@ -101,14 +161,14 @@ class LineasViewModel {
         }
     }
 
-    private fun deleteLinea(id: Int) {
+    private fun deleteLinea(linea: Linea) {
         CoroutineScope(Dispatchers.IO).launch {
-            lineaService.deleteLinea(id).collect() { result ->
+            lineaService.deleteLinea(linea).collect() { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _uiState.update {
                             it.copy(
-                                lineas = _uiState.value.lineas.filter { linea -> linea.id != id },
+                                lineas = _uiState.value.lineas.filter { lineaL -> lineaL.id != linea.id },
                                 loading = false
                             )
                         }
@@ -134,13 +194,15 @@ class LineasViewModel {
             error = null) }
     }
 
-    fun handleEvent(event: LineasEvents) {
+    fun handleEvent(event: PanelEvents) {
         when (event) {
-            is LineasEvents.GetLineas -> getAllLineas()
-            is LineasEvents.CreateLinea -> createLinea(event.linea)
-            is LineasEvents.UpdateLinea -> updateLinea(event.linea)
-            is LineasEvents.DeleteLinea -> deleteLinea(event.linea.id)
-            is LineasEvents.ClearErrors -> clearErrors()
+            is PanelEvents.GetPanelData -> getAllLineas()
+            is PanelEvents.CreateLinea -> createLinea(event.linea)
+            is PanelEvents.UpdateLinea -> updateLinea(event.linea)
+            is PanelEvents.DeleteLinea -> deleteLinea(event.linea)
+            is PanelEvents.FilterParadas -> loadParadasByLinea(event.linea)
+            is PanelEvents.FilterEncargado -> loadEncargadoByParada(event.parada)
+            is PanelEvents.ClearErrors -> clearErrors()
         }
     }
 

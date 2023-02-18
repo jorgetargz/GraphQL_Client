@@ -44,7 +44,7 @@ open class BaseRepository {
     }
 
     private suspend fun <R> FlowCollector<NetworkResult<R>>.onError(e: ApolloException) {
-        emit(NetworkResult.Error("Error en la respuesta del servidor"+ e.localizedMessage))
+        emit(NetworkResult.Error("Error en la respuesta del servidor"))
         logger().error("Error en la respuesta del servidor", e)
     }
 }

@@ -1,7 +1,0 @@
-query GetLineaById($id: Int!) {
-    linea(id: $id) {
-        id
-        numero
-        tipo
-    }
-}

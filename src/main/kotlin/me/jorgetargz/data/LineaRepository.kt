@@ -1,30 +1,72 @@
 package me.jorgetargz.data
 
 import kotlinx.coroutines.flow.Flow
+import me.jorgetargz.domain.modelo.Encargado
 import me.jorgetargz.domain.modelo.Linea
-import me.jorgetargz.localhost.*
+import me.jorgetargz.domain.modelo.Parada
+import me.jorgetargz.localhost.CreateLineaMutation
+import me.jorgetargz.localhost.DeleteLineaMutation
+import me.jorgetargz.localhost.GetAllLineasQuery
+import me.jorgetargz.localhost.UpdateLineaMutation
 import me.jorgetargz.utils.NetworkResult
 
 class LineaRepository : BaseRepository() {
 
     fun getAllLineas(): Flow<NetworkResult<List<Linea>>> = executeGraphQLQuery(
         GetAllLineasQuery()
-    ) { data -> data.allLineas!!.map { Linea(it!!.id, it.numero, it.tipo) } }
+    ) { data ->
+        data.allLineas?.map {
+            Linea(
+                it?.id ?: 0,
+                it?.numero ?: 0,
+                it?.tipo ?: "",
+                it?.paradas?.map { parada ->
+                    Parada(
+                        parada?.id ?: 0,
+                        parada?.nombre ?: "",
+                        parada?.direccion ?: "",
+                        parada?.encargado?.let { encargado ->
+                            Encargado(
+                                encargado.id,
+                                encargado.nombre,
+                                encargado.dni,
+                            )
+                        } ?: Encargado(),
+                        parada?.linea?.let { linea ->
+                            Linea(
+                                linea.id,
+                                linea.numero,
+                                linea.tipo,
+                            )
+                        } ?: Linea()
+                    )
+                } ?: emptyList()
+            )
+        } ?: emptyList()
+    }
 
-    fun getLinea(id: Int): Flow<NetworkResult<Linea>> = executeGraphQLQuery(
-        GetLineaByIdQuery(id)
-    ) { data -> Linea(data.linea!!.id, data.linea.numero, data.linea.tipo) }
+    fun createLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
+        CreateLineaMutation(linea.tipo, linea.numero)
+    ) { data ->
+        Linea(
+            data.createLinea?.id ?: 0,
+            data.createLinea?.numero ?: 0,
+            data.createLinea?.tipo ?: ""
+        )
+    }
 
-    fun createLinea(tipo: String, numero: Int): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
-        CreateLineaMutation(tipo, numero)
-    ) { data -> Linea(data.createLinea!!.id, data.createLinea.numero, data.createLinea.tipo) }
+    fun updateLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
+        UpdateLineaMutation(linea.id, linea.tipo, linea.numero)
+    ) { data ->
+        Linea(
+            data.updateLinea?.id ?: 0,
+            data.updateLinea?.numero ?: 0,
+            data.updateLinea?.tipo ?: ""
+        )
+    }
 
-    fun updateLinea(id: Int, tipo: String, numero: Int): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
-        UpdateLineaMutation(id, tipo, numero)
-    ) { data -> Linea(data.updateLinea!!.id, data.updateLinea.numero, data.updateLinea.tipo) }
-
-    fun deleteLinea(id: Int): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
-        DeleteLineaMutation(id)
-    ) { data -> Linea(data.deleteLinea!!.id) }
+    fun deleteLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
+        DeleteLineaMutation(linea.id)
+    ) { data -> Linea(data.deleteLinea?.id ?: 0) }
 
 }

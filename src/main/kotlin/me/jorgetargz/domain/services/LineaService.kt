@@ -1,18 +1,17 @@
 package me.jorgetargz.domain.services
 
 import me.jorgetargz.data.LineaRepository
+import me.jorgetargz.domain.modelo.Linea
 
-class LineaService {
+class LineaService(
+    private val lineaRepository: LineaRepository = LineaRepository()
+) {
 
-    private val lineaRepository = LineaRepository()
+    fun getAllLineas() = lineaRepository.getAllLineas()
 
-    suspend fun getAllLineas() = lineaRepository.getAllLineas()
+    fun createLinea(linea: Linea) = lineaRepository.createLinea(linea)
 
-    suspend fun getLineaById(id: Int) = lineaRepository.getLinea(id)
+    fun updateLinea(linea: Linea) = lineaRepository.updateLinea(linea)
 
-    suspend fun createLinea(tipo: String, numero: Int) = lineaRepository.createLinea(tipo, numero)
-
-    suspend fun updateLinea(id: Int, tipo: String, numero: Int) = lineaRepository.updateLinea(id, tipo, numero)
-
-    suspend fun deleteLinea(id: Int) = lineaRepository.deleteLinea(id)
+    fun deleteLinea(linea: Linea) = lineaRepository.deleteLinea(linea)
 }
