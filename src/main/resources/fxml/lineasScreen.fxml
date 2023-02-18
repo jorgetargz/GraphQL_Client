@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTableColumn?>
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="700.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.jorgetargz.ui.lineas.LineasController">
+    <children>
+        <Label fx:id="cargando" layoutX="461.0" layoutY="432.0" text="Cargando" />
+        <MFXTableView fx:id="tableLineas" layoutX="307.0" layoutY="103.0" prefHeight="310.0" prefWidth="366.0">
+            <tableColumns>
+                <MFXTableColumn fx:id="id" text="id" />
+                <MFXTableColumn fx:id="numero" text="numero" />
+                <MFXTableColumn fx:id="tipo" prefHeight="42.0" prefWidth="117.0" text="tipo" />
+            </tableColumns>
+        </MFXTableView>
+    </children>
+</AnchorPane>

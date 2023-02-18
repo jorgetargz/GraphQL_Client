@@ -1,0 +1,48 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Encargado {
+    dni: String!
+    id: Int!
+    nombre: String!
+}
+
+type Linea {
+    id: Int!
+    numero: Int!
+    paradas: [Parada]!
+    tipo: String!
+}
+
+type Mutation {
+    createEncargado(dni: String!, nombre: String!): Encargado
+    createLinea(numero: Int!, tipo: String!): Linea
+    createParada(direccion: String!, encargadoId: Int!, lineaId: Int!, nombre: String!): Parada
+    deleteEncargado(id: Int!): Encargado
+    deleteLinea(id: Int!): Linea
+    deleteParada(id: Int!): Parada
+    updateEncargado(dni: String!, id: Int!, nombre: String!): Encargado
+    updateLinea(id: Int!, numero: Int!, tipo: String!): Linea
+    updateParada(direccion: String!, encargadoId: Int!, id: Int!, lineaId: Int!, nombre: String!): Parada
+}
+
+type Parada {
+    direccion: String!
+    encargado: Encargado!
+    id: Int!
+    linea: Linea!
+    nombre: String!
+}
+
+type Query {
+    allEncargados: [Encargado]
+    allLineas: [Linea]
+    allParadas: [Parada]
+    encargado(id: Int!): Encargado
+    linea(id: Int!): Linea
+    parada(id: Int!): Parada
+}

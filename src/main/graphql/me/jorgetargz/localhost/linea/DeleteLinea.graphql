@@ -1,0 +1,5 @@
+mutation DeleteLinea($id: Int!) {
+  deleteLinea(id: $id) {
+    id
+  }
+}

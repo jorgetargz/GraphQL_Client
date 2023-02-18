@@ -1,0 +1,17 @@
+query GetAllLineas {
+    allLineas {
+        id,
+        numero,
+        tipo,
+        paradas {
+            id,
+            direccion,
+            nombre,
+            encargado {
+                id,
+                nombre,
+                dni
+            }
+        }
+    }
+}

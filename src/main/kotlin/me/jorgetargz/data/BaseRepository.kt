@@ -1,0 +1,50 @@
+package me.jorgetargz.data
+
+import com.apollographql.apollo3.api.Mutation
+import com.apollographql.apollo3.api.Query
+import com.apollographql.apollo3.exception.ApolloException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.flow
+import me.jorgetargz.data.apollo.Apollo.apolloClient
+import me.jorgetargz.utils.NetworkResult
+import org.apache.logging.log4j.kotlin.logger
+
+open class BaseRepository {
+
+    fun <T : Query.Data, R> executeGraphQLQuery(
+        query: Query<T>,
+        transform: (T) -> R
+    ): Flow<NetworkResult<R>> = flow {
+
+        emit(NetworkResult.Loading())
+
+        try {
+            val response = apolloClient.query(query).execute().dataAssertNoErrors
+            emit(NetworkResult.Success(transform(response)))
+        } catch (e: ApolloException) {
+            onError(e)
+        }
+    }
+
+    fun <T : Mutation.Data, R> executeGraphQLMutation(
+        mutation: Mutation<T>,
+        transform: (T) -> R
+    ): Flow<NetworkResult<R>> = flow {
+
+        emit(NetworkResult.Loading())
+
+        try {
+            val response = apolloClient.mutation(mutation).execute().dataAssertNoErrors
+            emit(NetworkResult.Success(transform(response)))
+        } catch (e: ApolloException) {
+            onError(e)
+        }
+
+    }
+
+    private suspend fun <R> FlowCollector<NetworkResult<R>>.onError(e: ApolloException) {
+        emit(NetworkResult.Error("Error en la respuesta del servidor"+ e.localizedMessage))
+        logger().error("Error en la respuesta del servidor", e)
+    }
+}
