@@ -1,0 +1,17 @@
+mutation CreateParada($nombre: String!, $direccion: String!, $encargadoId: Int!, $lineaId: Int!) {
+    createParada(nombre: $nombre, direccion: $direccion, encargadoId: $encargadoId, lineaId: $lineaId) {
+        id
+        nombre
+        direccion
+        encargado {
+            id
+            nombre
+            dni
+        }
+        linea {
+            id
+            numero
+            tipo
+        }
+    }
+}

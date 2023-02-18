@@ -105,10 +105,12 @@ class PanelController(
                     encargadosCmb.items.setAll(lineas.flatMap { it.paradas }.map { it.encargado } )
                 }
                 state.paradas.let { paradas ->
-                    tableParadas.items.setAll(paradas)
+                    tableParadas.items.clear()
+                    tableParadas.items.addAll(paradas)
                 }
                 state.encargados.let { encargados ->
-                    tableEncargados.items.setAll(encargados)
+                    tableEncargados.items.clear()
+                    tableEncargados.items.addAll(encargados)
                 }
                 state.error?.let { error ->
                     principalController?.showAlert(Alert.AlertType.ERROR, "ERROR", error)
@@ -139,11 +141,7 @@ class PanelController(
         tableParadas.isFooterVisible = false
         tableParadas.selectionModel.setAllowsMultipleSelection(false)
         tableParadas.selectionModel.selectionProperty().addListener { _, _, newValue ->
-            if (newValue.isEmpty()) {
-                idParadaTxt.text = ""
-                nombreParadaTxt.text = ""
-                direccionParadaTxt.text = ""
-            } else {
+            if (!newValue.isEmpty()) {
                 val parada = newValue.values.first()
                 idParadaTxt.text = parada.id.toString()
                 nombreParadaTxt.text = parada.nombre
@@ -162,11 +160,7 @@ class PanelController(
         tableEncargados.isFooterVisible = false
         tableEncargados.selectionModel.setAllowsMultipleSelection(false)
         tableEncargados.selectionModel.selectionProperty().addListener { _, _, newValue ->
-            if (newValue.isEmpty()) {
-                idEncargadoTxt.text = ""
-                nombreEncargadoTxt.text = ""
-                dniEncargadoTxt.text = ""
-            } else {
+            if (!newValue.isEmpty()) {
                 val encargado = newValue.values.first()
                 idEncargadoTxt.text = encargado.id.toString()
                 nombreEncargadoTxt.text = encargado.nombre
@@ -202,29 +196,56 @@ class PanelController(
     @FXML
     private fun deleteLinea() {
         panelViewModel.handleEvent(PanelEvents.DeleteLinea(Linea(idLineaTxt.text.toInt())))
+        idLineaTxt.text = ""
+        tipoLineaTxt.text = ""
+        numeroLineaTxt.text = ""
     }
 
-    fun createParada() {
+    @FXML
+    private fun createParada() {
+        Parada(
+            nombre = nombreParadaTxt.text,
+            direccion = direccionParadaTxt.text,
+            linea = lineasCmb.selectionModel.selectedItem,
+            encargado = encargadosCmb.selectionModel.selectedItem
+        ).let { parada ->
+            panelViewModel.handleEvent(PanelEvents.CreateParada(parada))
+        }
+    }
+
+    @FXML
+    private fun updateParada() {
+        Parada(
+            id = idParadaTxt.text.toInt(),
+            nombre = nombreParadaTxt.text,
+            direccion = direccionParadaTxt.text,
+            linea = lineasCmb.selectionModel.selectedItem,
+            encargado = encargadosCmb.selectionModel.selectedItem
+        ).let { parada ->
+            panelViewModel.handleEvent(PanelEvents.UpdateParada(parada))
+        }
+    }
+
+    @FXML
+    private fun deleteParada() {
+        panelViewModel.handleEvent(PanelEvents.DeleteParada(Parada(idParadaTxt.text.toInt())))
+        idParadaTxt.text = ""
+        nombreParadaTxt.text = ""
+        direccionParadaTxt.text = ""
+    }
+
+    @FXML
+    private fun createEncargado() {
 
     }
 
-    fun updateParada() {
+    @FXML
+    private fun updateEncargado() {
 
     }
 
-    fun deleteParada() {
-
-    }
-
-    fun createEncargado() {
-
-    }
-
-    fun updateEncargado() {
-
-    }
-
-    fun deleteEncargado() {
+    @FXML
+    private fun deleteEncargado() {
 
     }
 

@@ -23,7 +23,7 @@ class PanelViewModel(
 
     private fun getAllLineas() {
         CoroutineScope(Dispatchers.IO).launch {
-            lineaService.getAllLineas().collect() { result ->
+            lineaService.getAllLineas().collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         val lineas = result.data!!
@@ -53,7 +53,7 @@ class PanelViewModel(
 
     private fun loadParadasByLinea(linea: Linea) {
         CoroutineScope(Dispatchers.IO).launch {
-            paradaService.getParadasByLineaId(linea.id).collect() { result ->
+            paradaService.getParadasByLineaId(linea.id).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _uiState.update { it.copy(
@@ -79,7 +79,7 @@ class PanelViewModel(
 
     private fun loadEncargadoByParada(parada: Parada) {
         CoroutineScope(Dispatchers.IO).launch {
-            encargadoService.getEncargadoByParadaId(parada.id).collect() { result ->
+            encargadoService.getEncargadoByParadaId(parada.id).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _uiState.update { it.copy(
@@ -104,7 +104,7 @@ class PanelViewModel(
 
     private fun createLinea(linea: Linea) {
         CoroutineScope(Dispatchers.IO).launch {
-            lineaService.createLinea(linea).collect() { result ->
+            lineaService.createLinea(linea).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _uiState.update { it.copy(
@@ -129,7 +129,7 @@ class PanelViewModel(
 
     private fun updateLinea(linea: Linea) {
         CoroutineScope(Dispatchers.IO).launch {
-            lineaService.updateLinea(linea).collect() { result ->
+            lineaService.updateLinea(linea).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _uiState.update {
@@ -163,12 +163,99 @@ class PanelViewModel(
 
     private fun deleteLinea(linea: Linea) {
         CoroutineScope(Dispatchers.IO).launch {
-            lineaService.deleteLinea(linea).collect() { result ->
+            lineaService.deleteLinea(linea).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         _uiState.update {
                             it.copy(
                                 lineas = _uiState.value.lineas.filter { lineaL -> lineaL.id != linea.id },
+                                loading = false
+                            )
+                        }
+                    }
+
+                    is NetworkResult.Error -> {
+                        _uiState.update { it.copy(
+                            error = result.message,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _uiState.update { it.copy(
+                            loading = true) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createParada(parada: Parada) {
+        CoroutineScope(Dispatchers.IO).launch {
+            paradaService.createParada(parada).collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _uiState.update { it.copy(
+                            paradas = _uiState.value.paradas.plus(result.data!!),
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Error -> {
+                        _uiState.update { it.copy(
+                            error = result.message,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _uiState.update { it.copy(
+                            loading = true) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateParada(parada: Parada) {
+        CoroutineScope(Dispatchers.IO).launch {
+            paradaService.updateParada(parada).collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                paradas = _uiState.value.paradas.map { parada1 ->
+                                    if (parada1.id == parada.id) {
+                                        parada1.copy(nombre = parada.nombre, direccion = parada.direccion)
+                                    } else {
+                                        parada1
+                                    }
+                                },
+                                loading = false
+                            )
+                        }
+                    }
+
+                    is NetworkResult.Error -> {
+                        _uiState.update { it.copy(
+                            error = result.message,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _uiState.update { it.copy(
+                            loading = true) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deleteParada(parada: Parada) {
+        CoroutineScope(Dispatchers.IO).launch {
+            paradaService.deleteParada(parada).collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                paradas = _uiState.value.paradas.filter { paradaL -> paradaL.id != parada.id },
                                 loading = false
                             )
                         }
@@ -200,6 +287,9 @@ class PanelViewModel(
             is PanelEvents.CreateLinea -> createLinea(event.linea)
             is PanelEvents.UpdateLinea -> updateLinea(event.linea)
             is PanelEvents.DeleteLinea -> deleteLinea(event.linea)
+            is PanelEvents.CreateParada -> createParada(event.parada)
+            is PanelEvents.UpdateParada -> updateParada(event.parada)
+            is PanelEvents.DeleteParada -> deleteParada(event.parada)
             is PanelEvents.FilterParadas -> loadParadasByLinea(event.linea)
             is PanelEvents.FilterEncargado -> loadEncargadoByParada(event.parada)
             is PanelEvents.ClearErrors -> clearErrors()

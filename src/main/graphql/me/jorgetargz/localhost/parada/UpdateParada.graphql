@@ -1,0 +1,17 @@
+mutation UpdateParada($id: Int!, $nombre: String!, $direccion: String!, $encargadoId: Int!, $lineaId: Int!) {
+    updateParada(id: $id, nombre: $nombre, direccion: $direccion, encargadoId: $encargadoId, lineaId: $lineaId) {
+        id
+        nombre
+        direccion
+        encargado {
+            id
+            nombre
+            dni
+        }
+        linea {
+            id
+            numero
+            tipo
+        }
+    }
+}
