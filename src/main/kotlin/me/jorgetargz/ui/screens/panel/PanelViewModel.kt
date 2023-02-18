@@ -1,4 +1,4 @@
-package me.jorgetargz.ui.panel
+package me.jorgetargz.ui.screens.panel
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

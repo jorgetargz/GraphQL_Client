@@ -1,4 +1,4 @@
-package me.jorgetargz.ui.common
+package me.jorgetargz.ui.screens.common
 
 enum class Screens(val path: String) {
     WELCOME(ScreenConstants.FXML_WELCOME_SCREEN_FXML),

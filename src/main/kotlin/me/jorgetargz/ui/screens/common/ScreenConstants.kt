@@ -1,4 +1,4 @@
-package me.jorgetargz.ui.common
+package me.jorgetargz.ui.screens.common
 
 object ScreenConstants {
     const val FXML_WELCOME_SCREEN_FXML = "/fxml/welcomeScreen.fxml"

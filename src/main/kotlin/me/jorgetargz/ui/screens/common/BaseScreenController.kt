@@ -1,6 +1,6 @@
-package me.jorgetargz.ui.common
+package me.jorgetargz.ui.screens.common
 
-import me.jorgetargz.ui.main.MainController
+import me.jorgetargz.ui.screens.main.MainController
 
 open class BaseScreenController {
     var principalController: MainController? = null

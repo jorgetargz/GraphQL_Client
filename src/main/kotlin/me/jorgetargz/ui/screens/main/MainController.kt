@@ -1,4 +1,4 @@
-package me.jorgetargz.ui.main
+package me.jorgetargz.ui.screens.main
 
 import io.github.palexdev.materialfx.font.MFXFontIcon
 import javafx.application.Platform
@@ -15,9 +15,9 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.stage.Stage
-import me.jorgetargz.ui.common.BaseScreenController
-import me.jorgetargz.ui.common.ScreenConstants
-import me.jorgetargz.ui.common.Screens
+import me.jorgetargz.ui.screens.common.BaseScreenController
+import me.jorgetargz.ui.screens.common.ScreenConstants
+import me.jorgetargz.ui.screens.common.Screens
 import java.io.IOException
 import java.util.*
 import kotlin.system.exitProcess

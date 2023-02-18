@@ -1,4 +1,4 @@
-package me.jorgetargz.main
+package me.jorgetargz.ui.main
 
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
@@ -7,8 +7,8 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.paint.Color
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import me.jorgetargz.main.common.Constantes
-import me.jorgetargz.ui.main.MainController
+import me.jorgetargz.ui.main.common.Constantes
+import me.jorgetargz.ui.screens.main.MainController
 import org.apache.logging.log4j.kotlin.logger
 import java.util.*
 

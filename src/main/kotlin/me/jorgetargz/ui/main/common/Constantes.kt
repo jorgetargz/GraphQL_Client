@@ -1,4 +1,4 @@
-package me.jorgetargz.main.common
+package me.jorgetargz.ui.main.common
 
 object Constantes {
 

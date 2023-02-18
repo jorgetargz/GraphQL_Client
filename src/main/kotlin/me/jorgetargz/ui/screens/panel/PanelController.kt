@@ -1,4 +1,4 @@
-package me.jorgetargz.ui.panel
+package me.jorgetargz.ui.screens.panel
 
 import io.github.palexdev.materialfx.controls.MFXComboBox
 import io.github.palexdev.materialfx.controls.MFXTableColumn
@@ -10,15 +10,15 @@ import javafx.fxml.Initializable
 import javafx.scene.control.Alert
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import me.jorgetargz.domain.modelo.Encargado
 import me.jorgetargz.domain.modelo.Linea
 import me.jorgetargz.domain.modelo.Parada
-import me.jorgetargz.ui.common.BaseScreenController
-import me.jorgetargz.ui.common.ScreenConstants
+import me.jorgetargz.ui.screens.common.BaseScreenController
+import me.jorgetargz.ui.screens.common.ScreenConstants
 import org.apache.logging.log4j.kotlin.logger
 import java.io.IOException
 import java.net.URL
@@ -34,50 +34,70 @@ class PanelController(
 
     @FXML
     lateinit var tableLineas: MFXTableView<Linea>
+
     @FXML
     lateinit var idLineaColumn: MFXTableColumn<Linea>
+
     @FXML
     lateinit var numeroLineaColumn: MFXTableColumn<Linea>
+
     @FXML
     lateinit var tipoLineaColumn: MFXTableColumn<Linea>
+
     @FXML
     lateinit var idLineaTxt: MFXTextField
+
     @FXML
     lateinit var tipoLineaTxt: MFXTextField
+
     @FXML
     lateinit var numeroLineaTxt: MFXTextField
 
     @FXML
     lateinit var tableParadas: MFXTableView<Parada>
+
     @FXML
     lateinit var idParadaColumn: MFXTableColumn<Parada>
+
     @FXML
     lateinit var nombreParadaColumn: MFXTableColumn<Parada>
+
     @FXML
     lateinit var direccionParadaColumn: MFXTableColumn<Parada>
+
     @FXML
     lateinit var idParadaTxt: MFXTextField
+
     @FXML
     lateinit var nombreParadaTxt: MFXTextField
+
     @FXML
     lateinit var direccionParadaTxt: MFXTextField
+
     @FXML
     lateinit var lineasCmb: MFXComboBox<Linea>
+
     @FXML
     lateinit var encargadosCmb: MFXComboBox<Encargado>
 
     @FXML
     lateinit var tableEncargados: MFXTableView<Encargado>
+
     @FXML
     lateinit var idEncargadoColumn: MFXTableColumn<Encargado>
+
     @FXML
     lateinit var nombreEncargadoColumn: MFXTableColumn<Encargado>
+
     @FXML
     lateinit var dniEncargadoColumn: MFXTableColumn<Encargado>
+
     @FXML
     lateinit var idEncargadoTxt: MFXTextField
+
     @FXML
     lateinit var nombreEncargadoTxt: MFXTextField
+
     @FXML
     lateinit var dniEncargadoTxt: MFXTextField
 
@@ -109,7 +129,8 @@ class PanelController(
     }
 
     private fun stateCollector() {
-        GlobalScope.launch(Dispatchers.JavaFx) {
+        val scope = CoroutineScope(Dispatchers.JavaFx)
+        scope.launch {
             panelViewModel.uiState.collect { state ->
                 cargando.isVisible = state.loading
                 state.lineas.let { lineas ->

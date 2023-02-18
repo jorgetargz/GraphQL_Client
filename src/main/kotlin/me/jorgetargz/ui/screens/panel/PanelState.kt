@@ -1,4 +1,4 @@
-package me.jorgetargz.ui.panel
+package me.jorgetargz.ui.screens.panel
 
 import me.jorgetargz.domain.modelo.Encargado
 import me.jorgetargz.domain.modelo.Linea
