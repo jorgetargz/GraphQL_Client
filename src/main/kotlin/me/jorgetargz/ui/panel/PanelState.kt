@@ -8,6 +8,7 @@ data class PanelState(
     val lineas: List<Linea> = emptyList(),
     val paradas: List<Parada> = emptyList(),
     val encargados: List<Encargado> = emptyList(),
+    val encargadosSinFiltro: List<Encargado> = emptyList(),
     val error: String? = null,
     val loading: Boolean = false
 )

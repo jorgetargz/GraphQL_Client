@@ -90,7 +90,7 @@ class PanelController(
                 cargando.setImage(loadingGif)
             }
         } catch (e: IOException) {
-            logger.error("Could not load loading image", e)
+            logger.error(ScreenConstants.ERROR_LOADING_IMAGE, e)
         }
 
         cargando.isVisible = false
@@ -116,7 +116,6 @@ class PanelController(
                     tableLineas.items.clear()
                     tableLineas.items.addAll(lineas)
                     lineasCmb.items.setAll(lineas)
-                    encargadosCmb.items.setAll(lineas.flatMap { it.paradas }.map { it.encargado } )
                 }
                 state.paradas.let { paradas ->
                     tableParadas.items.clear()
@@ -126,8 +125,11 @@ class PanelController(
                     tableEncargados.items.clear()
                     tableEncargados.items.addAll(encargados)
                 }
+                state.encargadosSinFiltro.let { encargados ->
+                    encargadosCmb.items.setAll(encargados)
+                }
                 state.error?.let { error ->
-                    principalController?.showAlert(Alert.AlertType.ERROR, "ERROR", error)
+                    principalController?.showAlert(Alert.AlertType.ERROR, ScreenConstants.ERROR, error)
                     panelViewModel.handleEvent(PanelEvents.ClearErrors)
                 }
             }
@@ -250,17 +252,31 @@ class PanelController(
 
     @FXML
     private fun createEncargado() {
-
+        Encargado(
+            nombre = nombreEncargadoTxt.text,
+            dni = dniEncargadoTxt.text
+        ).let { encargado ->
+            panelViewModel.handleEvent(PanelEvents.CreateEncargado(encargado))
+        }
     }
 
     @FXML
     private fun updateEncargado() {
-
+        Encargado(
+            id = idEncargadoTxt.text.toInt(),
+            nombre = nombreEncargadoTxt.text,
+            dni = dniEncargadoTxt.text
+        ).let { encargado ->
+            panelViewModel.handleEvent(PanelEvents.UpdateEncargado(encargado))
+        }
     }
 
     @FXML
     private fun deleteEncargado() {
-
+        panelViewModel.handleEvent(PanelEvents.DeleteEncargado(Encargado(idEncargadoTxt.text.toInt())))
+        idEncargadoTxt.text = ""
+        nombreEncargadoTxt.text = ""
+        dniEncargadoTxt.text = ""
     }
 
 }

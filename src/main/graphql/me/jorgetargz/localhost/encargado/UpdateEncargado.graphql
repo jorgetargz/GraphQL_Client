@@ -1,0 +1,7 @@
+mutation UpdateEncargado($id: Int!, $nombre: String!, $dni: String!) {
+  updateEncargado(id: $id, nombre: $nombre, dni: $dni) {
+    id
+    nombre
+    dni
+  }
+}

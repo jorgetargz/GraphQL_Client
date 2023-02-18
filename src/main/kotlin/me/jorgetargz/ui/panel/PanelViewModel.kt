@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.jorgetargz.domain.modelo.Encargado
 import me.jorgetargz.domain.modelo.Linea
 import me.jorgetargz.domain.modelo.Parada
 import me.jorgetargz.domain.services.EncargadosService
@@ -33,6 +34,7 @@ class PanelViewModel(
                             lineas = lineas,
                             paradas = paradas,
                             encargados = encargados,
+                            encargadosSinFiltro = encargados,
                             loading = false) }
                     }
 
@@ -276,6 +278,93 @@ class PanelViewModel(
         }
     }
 
+    private fun createEncargado(encargado: Encargado) {
+        CoroutineScope(Dispatchers.IO).launch {
+            encargadoService.createEncargado(encargado).collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _uiState.update { it.copy(
+                            encargados = _uiState.value.encargados.plus(result.data!!),
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Error -> {
+                        _uiState.update { it.copy(
+                            error = result.message,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _uiState.update { it.copy(
+                            loading = true) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateEncargado(encargado: Encargado) {
+        CoroutineScope(Dispatchers.IO).launch {
+            encargadoService.updateEncargado(encargado).collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                encargados = _uiState.value.encargados.map { encargado1 ->
+                                    if (encargado1.id == encargado.id) {
+                                        encargado1.copy(nombre = encargado.nombre, dni = encargado.dni)
+                                    } else {
+                                        encargado1
+                                    }
+                                },
+                                loading = false
+                            )
+                        }
+                    }
+
+                    is NetworkResult.Error -> {
+                        _uiState.update { it.copy(
+                            error = result.message,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _uiState.update { it.copy(
+                            loading = true) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deleteEncargado(encargado: Encargado) {
+        CoroutineScope(Dispatchers.IO).launch {
+            encargadoService.deleteEncargado(encargado).collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                encargados = _uiState.value.encargados.filter { encargadoL -> encargadoL.id != encargado.id },
+                                loading = false
+                            )
+                        }
+                    }
+
+                    is NetworkResult.Error -> {
+                        _uiState.update { it.copy(
+                            error = result.message,
+                            loading = false) }
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _uiState.update { it.copy(
+                            loading = true) }
+                    }
+                }
+            }
+        }
+    }
+
     private fun clearErrors() {
         _uiState.update { it.copy(
             error = null) }
@@ -290,9 +379,13 @@ class PanelViewModel(
             is PanelEvents.CreateParada -> createParada(event.parada)
             is PanelEvents.UpdateParada -> updateParada(event.parada)
             is PanelEvents.DeleteParada -> deleteParada(event.parada)
+            is PanelEvents.CreateEncargado -> createEncargado(event.encargado)
+            is PanelEvents.UpdateEncargado -> updateEncargado(event.encargado)
+            is PanelEvents.DeleteEncargado -> deleteEncargado(event.encargado)
             is PanelEvents.FilterParadas -> loadParadasByLinea(event.linea)
             is PanelEvents.FilterEncargado -> loadEncargadoByParada(event.parada)
             is PanelEvents.ClearErrors -> clearErrors()
+
         }
     }
 

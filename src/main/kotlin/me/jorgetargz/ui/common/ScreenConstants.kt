@@ -16,4 +16,7 @@ object ScreenConstants {
             "IES Francisco de Quevedo\n"
     const val ALWAYS_ON_TOP = "always-on-top"
     const val STYLE = "style"
+
+    const val ERROR = "ERROR"
+    const val ERROR_LOADING_IMAGE = "Could not load loading image"
 }
