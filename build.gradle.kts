@@ -1,4 +1,3 @@
-import org.gradle.internal.impldep.jcifs.util.LogStream.level
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -22,15 +21,16 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.6.4")
+
+    implementation("com.apollographql.apollo3:apollo-api:3.7.3")
     implementation("com.apollographql.apollo3:apollo-runtime:3.7.3")
 
     // optional: if you want to use the normalized cache
-    implementation("com.apollographql.apollo3:apollo-normalized-cache-sqlite:3.7.3")
+    //implementation("com.apollographql.apollo3:apollo-normalized-cache-sqlite:3.7.3")
 
-    implementation("org.apache.logging.log4j:log4j-api-kotlin:1.3.0-SNAPSHOT")
-    implementation("org.apache.logging.log4j:log4j-core:2.16.0")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.6.4")
+    implementation("org.apache.logging.log4j:log4j-api:2.17.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.17.1")
 
     implementation("org.openjfx:javafx-base:17")
     implementation("org.openjfx:javafx-fxml:17")
@@ -42,7 +42,6 @@ dependencies {
         exclude("org.openjfx","javafx-graphics")
     }
 
-    implementation("com.apollographql.apollo3:apollo-api:3.7.3")
     testImplementation(kotlin("test"))
 }
 

@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import me.jorgetargz.data.apollo.Apollo.apolloClient
 import me.jorgetargz.utils.NetworkResult
-import org.apache.logging.log4j.kotlin.logger
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 open class BaseRepository {
 
@@ -44,7 +45,8 @@ open class BaseRepository {
     }
 
     private suspend fun <R> FlowCollector<NetworkResult<R>>.onError(e: ApolloException) {
+        val logger: Logger = LogManager.getLogger(BaseRepository::class.java)
         emit(NetworkResult.Error("Error en la respuesta del servidor"))
-        logger().error("Error en la respuesta del servidor", e)
+        logger.error(e.message, e)
     }
 }

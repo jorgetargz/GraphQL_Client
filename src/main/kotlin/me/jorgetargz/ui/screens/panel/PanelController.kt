@@ -19,7 +19,8 @@ import me.jorgetargz.domain.modelo.Linea
 import me.jorgetargz.domain.modelo.Parada
 import me.jorgetargz.ui.screens.common.BaseScreenController
 import me.jorgetargz.ui.screens.common.ScreenConstants
-import org.apache.logging.log4j.kotlin.logger
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import java.io.IOException
 import java.net.URL
 import java.util.*
@@ -102,6 +103,7 @@ class PanelController(
     lateinit var dniEncargadoTxt: MFXTextField
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
+        val logger: Logger = LogManager.getLogger(PanelController::class.java)
 
         try {
             javaClass.getResourceAsStream(ScreenConstants.MEDIA_LOADING_PATH).use { inputStream ->
@@ -110,7 +112,7 @@ class PanelController(
                 cargando.setImage(loadingGif)
             }
         } catch (e: IOException) {
-            logger.error(ScreenConstants.ERROR_LOADING_IMAGE, e)
+            logger.error(e.message, e)
         }
 
         cargando.isVisible = false

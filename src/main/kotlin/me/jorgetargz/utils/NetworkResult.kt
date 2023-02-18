@@ -18,7 +18,4 @@ sealed class NetworkResult<T>(
             is Success -> Success(transform(data))
         }
 
-
-
-
 }
