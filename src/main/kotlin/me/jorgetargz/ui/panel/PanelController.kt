@@ -8,7 +8,8 @@ import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Alert
-import javafx.scene.control.Label
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
@@ -17,6 +18,9 @@ import me.jorgetargz.domain.modelo.Encargado
 import me.jorgetargz.domain.modelo.Linea
 import me.jorgetargz.domain.modelo.Parada
 import me.jorgetargz.ui.common.BaseScreenController
+import me.jorgetargz.ui.common.ScreenConstants
+import org.apache.logging.log4j.kotlin.logger
+import java.io.IOException
 import java.net.URL
 import java.util.*
 
@@ -26,7 +30,7 @@ class PanelController(
 ) : Initializable, BaseScreenController() {
 
     @FXML
-    lateinit var cargando: Label
+    lateinit var cargando: ImageView
 
     @FXML
     lateinit var tableLineas: MFXTableView<Linea>
@@ -78,6 +82,16 @@ class PanelController(
     lateinit var dniEncargadoTxt: MFXTextField
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
+
+        try {
+            javaClass.getResourceAsStream(ScreenConstants.MEDIA_LOADING_PATH).use { inputStream ->
+                assert(inputStream != null)
+                val loadingGif = Image(inputStream)
+                cargando.setImage(loadingGif)
+            }
+        } catch (e: IOException) {
+            logger.error("Could not load loading image", e)
+        }
 
         cargando.isVisible = false
 

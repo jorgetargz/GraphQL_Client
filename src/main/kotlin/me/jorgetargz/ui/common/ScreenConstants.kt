@@ -4,6 +4,7 @@ object ScreenConstants {
     const val FXML_WELCOME_SCREEN_FXML = "/fxml/welcomeScreen.fxml"
     const val FXML_PANEL_SCREEN_FXML = "/fxml/panelScreen.fxml"
 
+    const val MEDIA_LOADING_PATH = "/media/loading.gif"
     const val CSS_DARKMODE_CSS = "/css/darkmode.css"
     const val CSS_STYLE_CSS = "/css/style.css"
     const val I_18_N_TEXTS_UI = "i18n/textsUI"
