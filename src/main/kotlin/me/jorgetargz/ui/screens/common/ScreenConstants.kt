@@ -17,6 +17,7 @@ object ScreenConstants {
     const val ALWAYS_ON_TOP = "always-on-top"
     const val STYLE = "style"
 
+    const val ADMIN_PANEL_MANU_ITEM = "menuItemAdminPanel"
+
     const val ERROR = "ERROR"
-    const val ERROR_LOADING_IMAGE = "Could not load loading image"
 }

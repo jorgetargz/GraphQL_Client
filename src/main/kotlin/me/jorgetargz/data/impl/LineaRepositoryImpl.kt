@@ -1,6 +1,7 @@
-package me.jorgetargz.data
+package me.jorgetargz.data.impl
 
 import kotlinx.coroutines.flow.Flow
+import me.jorgetargz.data.LineasRepository
 import me.jorgetargz.domain.modelo.Encargado
 import me.jorgetargz.domain.modelo.Linea
 import me.jorgetargz.domain.modelo.Parada
@@ -10,9 +11,9 @@ import me.jorgetargz.localhost.GetAllLineasQuery
 import me.jorgetargz.localhost.UpdateLineaMutation
 import me.jorgetargz.utils.NetworkResult
 
-class LineaRepository : BaseRepository() {
+class LineaRepositoryImpl : BaseRepository(), LineasRepository {
 
-    fun getAllLineas(): Flow<NetworkResult<List<Linea>>> = executeGraphQLQuery(
+    override fun getAllLineas(): Flow<NetworkResult<List<Linea>>> = executeGraphQLQuery(
         GetAllLineasQuery()
     ) { data ->
         data.allLineas?.map {
@@ -45,7 +46,7 @@ class LineaRepository : BaseRepository() {
         } ?: emptyList()
     }
 
-    fun createLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
+    override fun createLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
         CreateLineaMutation(linea.tipo, linea.numero)
     ) { data ->
         Linea(
@@ -55,7 +56,7 @@ class LineaRepository : BaseRepository() {
         )
     }
 
-    fun updateLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
+    override fun updateLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
         UpdateLineaMutation(linea.id, linea.tipo, linea.numero)
     ) { data ->
         Linea(
@@ -65,7 +66,7 @@ class LineaRepository : BaseRepository() {
         )
     }
 
-    fun deleteLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
+    override fun deleteLinea(linea: Linea): Flow<NetworkResult<Linea>> = executeGraphQLMutation(
         DeleteLineaMutation(linea.id)
     ) { data -> Linea(data.deleteLinea?.id ?: 0) }
 

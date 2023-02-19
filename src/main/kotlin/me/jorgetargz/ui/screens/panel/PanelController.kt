@@ -218,6 +218,7 @@ class PanelController(
             numero = numeroLineaTxt.text.toInt()
         ).let { linea ->
             panelViewModel.handleEvent(PanelEvents.CreateLinea(linea))
+            cleanLineaFields()
         }
     }
 
@@ -229,15 +230,14 @@ class PanelController(
             numero = numeroLineaTxt.text.toInt()
         ).let { linea ->
             panelViewModel.handleEvent(PanelEvents.UpdateLinea(linea))
+            cleanLineaFields()
         }
     }
 
     @FXML
     private fun deleteLinea() {
         panelViewModel.handleEvent(PanelEvents.DeleteLinea(Linea(idLineaTxt.text.toInt())))
-        idLineaTxt.text = ""
-        tipoLineaTxt.text = ""
-        numeroLineaTxt.text = ""
+        cleanLineaFields()
     }
 
     @FXML
@@ -249,6 +249,7 @@ class PanelController(
             encargado = encargadosCmb.selectionModel.selectedItem
         ).let { parada ->
             panelViewModel.handleEvent(PanelEvents.CreateParada(parada))
+            cleanParadaFileds()
         }
     }
 
@@ -262,15 +263,14 @@ class PanelController(
             encargado = encargadosCmb.selectionModel.selectedItem
         ).let { parada ->
             panelViewModel.handleEvent(PanelEvents.UpdateParada(parada))
+            cleanParadaFileds()
         }
     }
 
     @FXML
     private fun deleteParada() {
         panelViewModel.handleEvent(PanelEvents.DeleteParada(Parada(idParadaTxt.text.toInt())))
-        idParadaTxt.text = ""
-        nombreParadaTxt.text = ""
-        direccionParadaTxt.text = ""
+        cleanParadaFileds()
     }
 
     @FXML
@@ -280,6 +280,7 @@ class PanelController(
             dni = dniEncargadoTxt.text
         ).let { encargado ->
             panelViewModel.handleEvent(PanelEvents.CreateEncargado(encargado))
+            cleanEncargadoFields()
         }
     }
 
@@ -291,12 +292,29 @@ class PanelController(
             dni = dniEncargadoTxt.text
         ).let { encargado ->
             panelViewModel.handleEvent(PanelEvents.UpdateEncargado(encargado))
+            cleanEncargadoFields()
         }
     }
 
     @FXML
     private fun deleteEncargado() {
         panelViewModel.handleEvent(PanelEvents.DeleteEncargado(Encargado(idEncargadoTxt.text.toInt())))
+        cleanEncargadoFields()
+    }
+
+    private fun cleanLineaFields() {
+        idLineaTxt.text = ""
+        tipoLineaTxt.text = ""
+        numeroLineaTxt.text = ""
+    }
+
+    private fun cleanParadaFileds() {
+        idParadaTxt.text = ""
+        nombreParadaTxt.text = ""
+        direccionParadaTxt.text = ""
+    }
+
+    private fun cleanEncargadoFields() {
         idEncargadoTxt.text = ""
         nombreEncargadoTxt.text = ""
         dniEncargadoTxt.text = ""

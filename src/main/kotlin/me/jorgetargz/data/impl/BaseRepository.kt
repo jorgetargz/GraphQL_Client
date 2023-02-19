@@ -1,4 +1,4 @@
-package me.jorgetargz.data
+package me.jorgetargz.data.impl
 
 import com.apollographql.apollo3.api.Mutation
 import com.apollographql.apollo3.api.Query

@@ -1,16 +1,16 @@
 package me.jorgetargz.domain.services
 
-import me.jorgetargz.data.ParadasRepository
+import kotlinx.coroutines.flow.Flow
 import me.jorgetargz.domain.modelo.Parada
+import me.jorgetargz.utils.NetworkResult
 
-class ParadasService(
-    private val paradasRepository: ParadasRepository = ParadasRepository()
-) {
-    fun getParadasByLineaId(lineaId: Int) = paradasRepository.getParadasByLineaId(lineaId)
+interface ParadasService {
 
-    fun createParada(parada: Parada) = paradasRepository.createParada(parada)
+    fun getParadasByLineaId(lineaId: Int): Flow<NetworkResult<List<Parada>>>
 
-    fun updateParada(parada: Parada) = paradasRepository.updateParada(parada)
+    fun createParada(parada: Parada): Flow<NetworkResult<Parada>>
 
-    fun deleteParada(parada: Parada) = paradasRepository.deleteParada(parada)
+    fun updateParada(parada: Parada): Flow<NetworkResult<Parada>>
+
+    fun deleteParada(parada: Parada): Flow<NetworkResult<Parada>>
 }

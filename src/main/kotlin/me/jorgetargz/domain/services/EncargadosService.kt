@@ -1,16 +1,16 @@
 package me.jorgetargz.domain.services
 
-import me.jorgetargz.data.EncargadosRepository
+import kotlinx.coroutines.flow.Flow
 import me.jorgetargz.domain.modelo.Encargado
+import me.jorgetargz.utils.NetworkResult
 
-class EncargadosService(
-    private val encargadosRepository: EncargadosRepository = EncargadosRepository()
-) {
-    fun getEncargadoByParadaId(paradaId: Int) = encargadosRepository.getEncargadoByParadaId(paradaId)
+interface EncargadosService {
 
-    fun createEncargado(encargado: Encargado) = encargadosRepository.createEncargado(encargado)
+    fun getEncargadoByParadaId(paradaId: Int): Flow<NetworkResult<Encargado>>
 
-    fun updateEncargado(encargado: Encargado) = encargadosRepository.updateEncargado(encargado)
+    fun createEncargado(encargado: Encargado): Flow<NetworkResult<Encargado>>
 
-    fun deleteEncargado(encargado: Encargado) = encargadosRepository.deleteEncargado(encargado)
+    fun updateEncargado(encargado: Encargado): Flow<NetworkResult<Encargado>>
+
+    fun deleteEncargado(encargado: Encargado): Flow<NetworkResult<Encargado>>
 }

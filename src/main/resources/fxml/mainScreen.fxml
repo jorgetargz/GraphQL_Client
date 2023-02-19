@@ -17,14 +17,17 @@
                 <HBox.margin>
                     <Insets right="200.0" top="20.0"/>
                 </HBox.margin>
-                <Menu fx:id="menuSesion" mnemonicParsing="false" text="Sesion">
+                <Menu fx:id="menuSesion" mnemonicParsing="false" text="%Sesion">
                     <MenuItem fx:id="menuItemPantallaInicio" mnemonicParsing="false" onAction="#menuOnClick"
                               text="%Main"/>
-                    <MenuItem fx:id="menuItemExit" mnemonicParsing="false" onAction="#exit" text="Salir"/>
+                    <MenuItem fx:id="menuItemExit" mnemonicParsing="false" onAction="#exit" text="%Salir"/>
                     <MenuItem fx:id="menuItemModoOscuro" mnemonicParsing="false" onAction="#cambiarcss"
                               text="%ChangeTheme"/>
                 </Menu>
-                <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
+                <Menu fx:id="menuAdmin" mnemonicParsing="false" text="%Admin">
+                    <MenuItem fx:id="menuItemAdminPanel" mnemonicParsing="false" onAction="#menuOnClick" text="%AdminPanel"/>
+                </Menu>
+                <Menu fx:id="menuHelp" mnemonicParsing="false" text="%Help">
                     <MenuItem fx:id="menuItemAcercaDe" mnemonicParsing="false" onAction="#acercaDe" text="%About"/>
                 </Menu>
             </MenuBar>

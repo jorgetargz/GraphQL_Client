@@ -1,55 +1,16 @@
 package me.jorgetargz.data
 
+import kotlinx.coroutines.flow.Flow
 import me.jorgetargz.domain.modelo.Encargado
-import me.jorgetargz.localhost.CreateEncargadoMutation
-import me.jorgetargz.localhost.GetEncargadoByParadaIdQuery
-import me.jorgetargz.localhost.UpdateEncargadoMutation
+import me.jorgetargz.utils.NetworkResult
 
-class EncargadosRepository : BaseRepository() {
+interface EncargadosRepository {
 
-    fun getEncargadoByParadaId(paradaId: Int) = executeGraphQLQuery(
-        GetEncargadoByParadaIdQuery(paradaId)
-    ) { data ->
-        data.parada?.encargado?.let {
-            Encargado(
-                it.id,
-                it.nombre,
-                it.dni,
-            )
-        } ?: Encargado()
-    }
+    fun getEncargadoByParadaId(paradaId: Int): Flow<NetworkResult<Encargado>>
 
-    fun createEncargado(encargado: Encargado) = executeGraphQLMutation(
-        CreateEncargadoMutation(encargado.nombre, encargado.dni)
-    ) { data ->
-        data.createEncargado?.let {
-            Encargado(
-                it.id,
-                it.nombre,
-                it.dni,
-            )
-        } ?: Encargado()
-    }
+    fun createEncargado(encargado: Encargado): Flow<NetworkResult<Encargado>>
 
-    fun updateEncargado(encargado: Encargado) = executeGraphQLMutation(
-        UpdateEncargadoMutation(encargado.id, encargado.nombre, encargado.dni)
-    ) { data ->
-        data.updateEncargado?.let {
-            Encargado(
-                it.id,
-                it.nombre,
-                it.dni,
-            )
-        } ?: Encargado()
-    }
+    fun updateEncargado(encargado: Encargado): Flow<NetworkResult<Encargado>>
 
-    fun deleteEncargado(encargado: Encargado) = executeGraphQLMutation(
-        UpdateEncargadoMutation(encargado.id, encargado.nombre, encargado.dni)
-    ) { data ->
-        data.updateEncargado?.let {
-            Encargado(
-                it.id
-            )
-        } ?: Encargado()
-    }
+    fun deleteEncargado(encargado: Encargado): Flow<NetworkResult<Encargado>>
 }

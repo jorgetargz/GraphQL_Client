@@ -10,14 +10,17 @@ import me.jorgetargz.domain.modelo.Encargado
 import me.jorgetargz.domain.modelo.Linea
 import me.jorgetargz.domain.modelo.Parada
 import me.jorgetargz.domain.services.EncargadosService
-import me.jorgetargz.domain.services.LineaService
+import me.jorgetargz.domain.services.LineasService
 import me.jorgetargz.domain.services.ParadasService
+import me.jorgetargz.domain.services.impl.EncargadosServiceImpl
+import me.jorgetargz.domain.services.impl.LineaServiceImpl
+import me.jorgetargz.domain.services.impl.ParadasServiceImpl
 import me.jorgetargz.utils.NetworkResult
 
 class PanelViewModel(
-    private val lineaService: LineaService = LineaService(),
-    private val paradaService: ParadasService = ParadasService(),
-    private val encargadoService: EncargadosService = EncargadosService(),
+    private val lineaService: LineasService = LineaServiceImpl(),
+    private val paradaService: ParadasService = ParadasServiceImpl(),
+    private val encargadoService: EncargadosService = EncargadosServiceImpl(),
 ) {
     private val _uiState = MutableStateFlow(PanelState())
     val uiState: StateFlow<PanelState> get() = _uiState

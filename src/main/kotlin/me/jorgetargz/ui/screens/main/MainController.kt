@@ -22,6 +22,7 @@ import java.io.IOException
 import java.util.*
 import kotlin.system.exitProcess
 
+
 class MainController() {
     private val alert: Alert = Alert(Alert.AlertType.NONE)
 
@@ -73,7 +74,7 @@ class MainController() {
             primaryStage!!.y = event.screenY + yOffset
         }
         menuPrincipal.isVisible = true
-        cargarPantalla(Screens.PANEL)
+        cargarPantalla(Screens.WELCOME)
     }
 
     val width: Double
@@ -106,7 +107,8 @@ class MainController() {
     @FXML
     private fun menuOnClick(actionEvent: ActionEvent) {
         when ((actionEvent.source as MenuItem).id) {
-            else -> println("No se ha implementado la accion del menu")
+            ScreenConstants.ADMIN_PANEL_MANU_ITEM -> cargarPantalla(Screens.PANEL)
+            else -> cargarPantalla(Screens.WELCOME)
         }
     }
 
