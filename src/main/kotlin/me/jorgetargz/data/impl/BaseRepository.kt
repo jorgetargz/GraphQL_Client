@@ -11,6 +11,8 @@ import me.jorgetargz.utils.NetworkResult
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+private const val ERROR_MESSAGE = "Error en la respuesta del servidor"
+
 open class BaseRepository {
 
     fun <T : Query.Data, R> executeGraphQLQuery(
@@ -46,7 +48,7 @@ open class BaseRepository {
 
     private suspend fun <R> FlowCollector<NetworkResult<R>>.onError(e: ApolloException) {
         val logger: Logger = LogManager.getLogger(BaseRepository::class.java)
-        emit(NetworkResult.Error("Error en la respuesta del servidor"))
+        emit(NetworkResult.Error(ERROR_MESSAGE))
         logger.error(e.message, e)
     }
 }

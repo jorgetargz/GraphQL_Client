@@ -20,4 +20,5 @@ object ScreenConstants {
     const val ADMIN_PANEL_MANU_ITEM = "menuItemAdminPanel"
 
     const val ERROR = "ERROR"
+    const val WELCOME = "Welcome to Metro manager"
 }

@@ -40,9 +40,9 @@ class MainFX : Application() {
             primaryStage?.initStyle(StageStyle.TRANSPARENT)
             primaryStage?.show()
 
-            logger.info("Pantalla principal cargada")
+            logger.info(Constantes.PANTALLA_PRINCIPAL_CARGADA)
         } catch (e: Exception) {
-            logger.error("Error al cargar la pantalla principal", e)
+            logger.error(Constantes.ERROR_AL_CARGAR_LA_PANTALLA_PRINCIPAL, e)
         }
     }
 }

@@ -7,8 +7,10 @@ import javafx.fxml.Initializable
 import javafx.scene.control.Label
 import javafx.util.Duration
 import me.jorgetargz.ui.screens.common.BaseScreenController
+import me.jorgetargz.ui.screens.common.ScreenConstants
 import java.net.URL
 import java.util.*
+
 
 class WelcomeScreenController : Initializable, BaseScreenController() {
 
@@ -21,7 +23,7 @@ class WelcomeScreenController : Initializable, BaseScreenController() {
 
     override fun principalCargado() {
         animarPantalla()
-        val welcome = "Welcome to Metro manager"
+        val welcome = ScreenConstants.WELCOME
         lbBienvenido.text = welcome
     }
 
