@@ -12,15 +12,12 @@ import me.jorgetargz.domain.modelo.Parada
 import me.jorgetargz.domain.services.EncargadosService
 import me.jorgetargz.domain.services.LineasService
 import me.jorgetargz.domain.services.ParadasService
-import me.jorgetargz.domain.services.impl.EncargadosServiceImpl
-import me.jorgetargz.domain.services.impl.LineaServiceImpl
-import me.jorgetargz.domain.services.impl.ParadasServiceImpl
 import me.jorgetargz.utils.NetworkResult
 
 class PanelViewModel(
-    private val lineaService: LineasService = LineaServiceImpl(),
-    private val paradaService: ParadasService = ParadasServiceImpl(),
-    private val encargadoService: EncargadosService = EncargadosServiceImpl(),
+    private val lineaService: LineasService,
+    private val paradaService: ParadasService,
+    private val encargadoService: EncargadosService,
 ) {
     private val _uiState = MutableStateFlow(PanelState())
     val uiState: StateFlow<PanelState> get() = _uiState
@@ -33,23 +30,32 @@ class PanelViewModel(
                         val lineas = result.data!!
                         val paradas = lineas.flatMap { it.paradas }
                         val encargados = paradas.map { it.encargado }
-                        _uiState.update { it.copy(
-                            lineas = lineas,
-                            paradas = paradas,
-                            encargados = encargados,
-                            encargadosSinFiltro = encargados,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                lineas = lineas,
+                                paradas = paradas,
+                                encargados = encargados,
+                                encargadosSinFiltro = encargados,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -61,21 +67,30 @@ class PanelViewModel(
             paradaService.getParadasByLineaId(linea.id).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
-                        _uiState.update { it.copy(
-                            paradas = result.data!!,
-                            encargados = result.data!!.map { it.encargado },
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                paradas = result.data!!,
+                                encargados = result.data!!.map { it.encargado },
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -87,20 +102,29 @@ class PanelViewModel(
             encargadoService.getEncargadoByParadaId(parada.id).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
-                        _uiState.update { it.copy(
-                            encargados = listOf(result.data!!),
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                encargados = listOf(result.data!!),
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -112,20 +136,29 @@ class PanelViewModel(
             lineaService.createLinea(linea).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
-                        _uiState.update { it.copy(
-                            lineas = _uiState.value.lineas.plus(result.data!!),
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                lineas = _uiState.value.lineas.plus(result.data!!),
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -152,14 +185,20 @@ class PanelViewModel(
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -180,14 +219,20 @@ class PanelViewModel(
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -199,20 +244,29 @@ class PanelViewModel(
             paradaService.createParada(parada).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
-                        _uiState.update { it.copy(
-                            paradas = _uiState.value.paradas.plus(result.data!!),
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                paradas = _uiState.value.paradas.plus(result.data!!),
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -239,14 +293,20 @@ class PanelViewModel(
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -267,14 +327,20 @@ class PanelViewModel(
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -286,20 +352,29 @@ class PanelViewModel(
             encargadoService.createEncargado(encargado).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
-                        _uiState.update { it.copy(
-                            encargados = _uiState.value.encargados.plus(result.data!!),
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                encargados = _uiState.value.encargados.plus(result.data!!),
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -326,14 +401,20 @@ class PanelViewModel(
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -354,14 +435,20 @@ class PanelViewModel(
                     }
 
                     is NetworkResult.Error -> {
-                        _uiState.update { it.copy(
-                            error = result.message,
-                            loading = false) }
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                loading = false
+                            )
+                        }
                     }
 
                     is NetworkResult.Loading -> {
-                        _uiState.update { it.copy(
-                            loading = true) }
+                        _uiState.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
                     }
                 }
             }
@@ -369,8 +456,11 @@ class PanelViewModel(
     }
 
     private fun clearErrors() {
-        _uiState.update { it.copy(
-            error = null) }
+        _uiState.update {
+            it.copy(
+                error = null
+            )
+        }
     }
 
     fun handleEvent(event: PanelEvents) {

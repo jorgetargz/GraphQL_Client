@@ -1,12 +1,11 @@
 package me.jorgetargz.domain.services.impl
 
 import me.jorgetargz.data.LineasRepository
-import me.jorgetargz.data.impl.LineaRepositoryImpl
 import me.jorgetargz.domain.modelo.Linea
 import me.jorgetargz.domain.services.LineasService
 
 class LineaServiceImpl(
-    private val lineaRepository: LineasRepository = LineaRepositoryImpl()
+    private val lineaRepository: LineasRepository
 ) : LineasService {
 
     override fun getAllLineas() = lineaRepository.getAllLineas()

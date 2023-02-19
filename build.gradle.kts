@@ -32,6 +32,8 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:2.17.1")
     implementation("org.apache.logging.log4j:log4j-core:2.17.1")
 
+    implementation("io.insert-koin:koin-core:3.3.2")
+
     implementation("org.openjfx:javafx-base:17")
     implementation("org.openjfx:javafx-fxml:17")
 

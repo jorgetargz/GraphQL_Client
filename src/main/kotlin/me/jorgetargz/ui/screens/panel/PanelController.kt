@@ -21,14 +21,16 @@ import me.jorgetargz.ui.screens.common.BaseScreenController
 import me.jorgetargz.ui.screens.common.ScreenConstants
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.IOException
 import java.net.URL
 import java.util.*
 
 
-class PanelController(
-    private val panelViewModel: PanelViewModel = PanelViewModel()
-) : Initializable, BaseScreenController() {
+class PanelController() : Initializable, BaseScreenController(), KoinComponent {
+
+    private val panelViewModel: PanelViewModel by inject()
 
     @FXML
     lateinit var cargando: ImageView

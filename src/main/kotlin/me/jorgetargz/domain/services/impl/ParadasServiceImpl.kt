@@ -1,12 +1,11 @@
 package me.jorgetargz.domain.services.impl
 
 import me.jorgetargz.data.ParadasRepository
-import me.jorgetargz.data.impl.ParadasRepositoryImpl
 import me.jorgetargz.domain.modelo.Parada
 import me.jorgetargz.domain.services.ParadasService
 
 class ParadasServiceImpl(
-    private val paradasRepository: ParadasRepository = ParadasRepositoryImpl()
+    private val paradasRepository: ParadasRepository
 ) : ParadasService {
 
     override fun getParadasByLineaId(lineaId: Int) = paradasRepository.getParadasByLineaId(lineaId)

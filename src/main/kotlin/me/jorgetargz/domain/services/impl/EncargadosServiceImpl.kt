@@ -1,12 +1,11 @@
 package me.jorgetargz.domain.services.impl
 
 import me.jorgetargz.data.EncargadosRepository
-import me.jorgetargz.data.impl.EncargadosRepositoryImpl
 import me.jorgetargz.domain.modelo.Encargado
 import me.jorgetargz.domain.services.EncargadosService
 
-class EncargadosServiceImpl (
-    private val encargadosRepository: EncargadosRepository = EncargadosRepositoryImpl()
+class EncargadosServiceImpl(
+    private val encargadosRepository: EncargadosRepository
 ) : EncargadosService {
     override fun getEncargadoByParadaId(paradaId: Int) = encargadosRepository.getEncargadoByParadaId(paradaId)
 

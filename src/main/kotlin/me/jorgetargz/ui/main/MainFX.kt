@@ -46,7 +46,3 @@ class MainFX : Application() {
         }
     }
 }
-
-fun main(args: Array<String>) {
-    Application.launch(MainFX::class.java, *args)
-}
